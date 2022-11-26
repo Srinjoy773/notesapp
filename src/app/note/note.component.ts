@@ -1,4 +1,4 @@
-import { Component, OnInit, ɵisDefaultChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Note } from '../note';
 import { NoteService } from '../note.service';
@@ -15,6 +15,7 @@ export class NoteComponent implements OnInit {
   noteForm!: FormGroup;
   editForm!: FormGroup;
   noteDetails: any;
+  tempNote: any;
   notesData: any = []
 
   noteObj: Note ={
@@ -29,7 +30,7 @@ export class NoteComponent implements OnInit {
     });
     this.editForm = this.fb.group({
       edit_title:['', Validators.required],
-      edit_description:['', Validators.required]
+      edit_description:['', Validators.required],
     })
 
   }
@@ -70,17 +71,29 @@ export class NoteComponent implements OnInit {
     this.noteDetails = note
     console.log(this.noteDetails)
   }
+  reset(note:Note){
+    this.noteDetails=this.tempNote;
+    this.editForm.reset();
+  }
   //update notes
   updateNote(note: Note) {
     const { value } = this.editForm;
-
-    this.noteObj.id = note.id;
-    this.noteObj.note_title = value.edit_title;
-    this.noteObj.note_dec = value.edit_description;
-
-    this.noteService.updateNote(note, this.noteObj).then(() => {
+    this.noteObj.id = this.noteDetails.id;
+    if(value.edit_title=='' || value.edit_title==null){
+      this.noteObj.note_title = this.noteDetails.note_title;
+      value.edit_title=this.noteDetails.note_title;
+    }else{
+      this.noteObj.note_title = value.edit_title;
+    }
+if(value.edit_description=='' || value.edit_description==null){
+      this.noteObj.note_dec = this.noteDetails.note_dec;
+      value.edit_description=this.noteDetails.note_dec;
+    }else{
+      this.noteObj.note_dec = value.edit_description;
+    }
+    this.noteService.updateNote(this.noteDetails, this.noteObj).then(() => {
       alert("Note Update Successfully")
     });
-    this.editForm.reset();
+
   }
 }

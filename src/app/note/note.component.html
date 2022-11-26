@@ -76,8 +76,8 @@ type="ball-scale-multiple" [fullScreen]="true">
               </form>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" (click)="updateNote(notesData)">Update Note</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="reset(noteDetails)">Close</button>
+              <button type="button" class="btn btn-primary" (click)="updateNote(notesData)" >Update Note</button>
             </div>
           </div>
         </div>
